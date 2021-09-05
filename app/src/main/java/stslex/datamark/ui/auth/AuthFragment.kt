@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import stslex.datamark.R
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import stslex.datamark.data.model.TokenModel
 import stslex.datamark.databinding.FragmentAuthBinding
 import stslex.datamark.ui.BaseFragment
+import stslex.datamark.util.Result
 
 
 class AuthFragment : BaseFragment() {
@@ -29,9 +33,31 @@ class AuthFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_auth_to_nav_main)
+            val username = binding.textEmail.editText?.text.toString()
+            val password = binding.textPassword.editText?.text.toString()
+            val agree = true
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.auth(username, password, agree).collect {
+                    it.collect()
+                }
+            }
         }
     }
+
+    private fun Result<TokenModel>.collect() = when (this) {
+        is Result.Success -> {
+            val directions =
+                AuthFragmentDirections.actionNavAuthToNavMain(data.token)
+            findNavController().navigate(directions)
+        }
+        is Result.Failure -> {
+
+        }
+        is Result.Loading -> {
+
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
