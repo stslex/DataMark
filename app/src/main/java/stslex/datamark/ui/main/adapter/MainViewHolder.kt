@@ -2,7 +2,7 @@ package stslex.datamark.ui.main.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import stslex.datamark.databinding.ItemShipsBinding
-import stslex.datamark.data.ShipModel
+import stslex.datamark.data.model.ShipModel
 
 class MainViewHolder(
     private val binding: ItemShipsBinding

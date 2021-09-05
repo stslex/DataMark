@@ -1,4 +1,4 @@
-package stslex.datamark.data
+package stslex.datamark.data.model
 
 data class ShipModel(
     val name: String,

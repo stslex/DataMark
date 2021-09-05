@@ -9,10 +9,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import stslex.datamark.R
 import stslex.datamark.databinding.FragmentMainBinding
+import stslex.datamark.ui.BaseFragment
 import stslex.datamark.ui.main.adapter.MainAdapter
 
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!

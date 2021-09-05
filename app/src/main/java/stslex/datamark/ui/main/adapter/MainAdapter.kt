@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import stslex.datamark.databinding.ItemShipsBinding
-import stslex.datamark.data.ShipModel
+import stslex.datamark.data.model.ShipModel
 
 class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
     private val items = mutableListOf<ShipModel>()
