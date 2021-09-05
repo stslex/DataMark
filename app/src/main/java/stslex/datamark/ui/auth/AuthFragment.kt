@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import stslex.datamark.data.model.TokenModel
@@ -15,7 +16,7 @@ import stslex.datamark.databinding.FragmentAuthBinding
 import stslex.datamark.ui.BaseFragment
 import stslex.datamark.util.Result
 
-
+@ExperimentalCoroutinesApi
 class AuthFragment : BaseFragment() {
 
     private var _binding: FragmentAuthBinding? = null

@@ -1,12 +1,41 @@
 package stslex.datamark.ui.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import stslex.datamark.data.model.ShipListModel
+import stslex.datamark.data.model.ShipsLabelsListModel
 import stslex.datamark.data.repository.interf.ShipsRepository
+import stslex.datamark.util.Result
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class MainViewModel @Inject constructor(
     private val repository: ShipsRepository
 ) : ViewModel() {
+
+    suspend fun getShipsList(token: String): StateFlow<Result<ShipListModel>> =
+        repository.getShipsList(token).stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            Result.Loading
+        )
+
+    suspend fun getShipsLabels(
+        token: String,
+        code: String
+    ): StateFlow<Result<ShipsLabelsListModel>> =
+        repository.getShipsLabel(token, code).stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            Result.Loading
+        )
+
+    fun makeShips(token: String, code: String, label: String) = viewModelScope.launch {
+        repository.makeShips(token, code, label)
+    }
 }

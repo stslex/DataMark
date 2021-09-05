@@ -18,13 +18,13 @@ interface ShipsService {
     @POST("/$POST_SHIPS_LABELS/")
     fun getShipsLabels(
         @Query(QUERY_TOKEN) token: String,
-        @Query(QUERY_CODE) code: Int
+        @Query(QUERY_CODE) code: String
     ): Response<ShipsLabelsListModel>
 
     @POST("/$POST_SHIPS/")
     fun makeShips(
         @Query(QUERY_TOKEN) token: String,
-        @Query(QUERY_CODE) code: Int,
+        @Query(QUERY_CODE) code: String,
         @Query(QUERY_LABEL) label: String
     )
 }

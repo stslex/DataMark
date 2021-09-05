@@ -3,6 +3,7 @@ package stslex.datamark.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import stslex.datamark.data.model.TokenModel
@@ -22,6 +23,8 @@ class AuthViewModel @Inject constructor(
     ): StateFlow<Result<TokenModel>> =
         repository.auth(username, password, agree)
             .stateIn(
-                viewModelScope
+                viewModelScope,
+                SharingStarted.Lazily,
+                Result.Loading
             )
 }
