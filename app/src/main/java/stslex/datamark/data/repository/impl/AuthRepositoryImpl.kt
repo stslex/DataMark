@@ -1,5 +1,6 @@
 package stslex.datamark.data.repository.impl
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +11,7 @@ import stslex.datamark.data.service.AuthService
 import stslex.datamark.util.Result
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class AuthRepositoryImpl @Inject constructor(
     private val service: AuthService
 ) : AuthRepository {

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import stslex.datamark.di.key.ViewModelKey
 import stslex.datamark.ui.auth.AuthViewModel
 import stslex.datamark.ui.main.MainViewModel
 
+@ExperimentalCoroutinesApi
 @Module
 interface ViewModelModule {
     @IntoMap

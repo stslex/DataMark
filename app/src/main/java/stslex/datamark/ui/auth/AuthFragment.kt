@@ -1,6 +1,7 @@
 package stslex.datamark.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,17 +45,19 @@ class AuthFragment : BaseFragment() {
         }
     }
 
-    private fun Result<TokenModel>.collect() = when (this) {
-        is Result.Success -> {
-            val directions =
-                AuthFragmentDirections.actionNavAuthToNavMain(data.token)
-            findNavController().navigate(directions)
-        }
-        is Result.Failure -> {
+    private fun Result<TokenModel>.collect() {
+        when (this) {
+            is Result.Success -> {
+                val directions =
+                    AuthFragmentDirections.actionNavAuthToNavMain(data.token)
+                findNavController().navigate(directions)
+            }
+            is Result.Failure -> {
+                Log.e("exception", exception.message, exception.cause)
+            }
+            is Result.Loading -> {
 
-        }
-        is Result.Loading -> {
-
+            }
         }
     }
 
