@@ -1,5 +1,8 @@
 package stslex.datamark.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class ShipListModel(
-    val ships_list: List<ShipModel>
+    @SerializedName("ships_list")
+    val ships_list: List<CodeModel>
 )

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import stslex.datamark.data.model.ShipListModel
-import stslex.datamark.data.model.ShipsLabelsListModel
+import stslex.datamark.data.model.ShipLabelModel
 import stslex.datamark.data.repository.interf.ShipsRepository
 import stslex.datamark.util.Result
 import javax.inject.Inject
@@ -28,14 +28,18 @@ class MainViewModel @Inject constructor(
     suspend fun getShipsLabels(
         token: String,
         code: String
-    ): StateFlow<Result<ShipsLabelsListModel>> =
+    ): StateFlow<Result<ShipLabelModel>> =
         repository.getShipsLabel(token, code).stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             Result.Loading
         )
 
-    fun makeShips(token: String, code: String, label: String) = viewModelScope.launch {
-        repository.makeShips(token, code, label)
-    }
+    suspend fun makeShips(token: String, code: String, label: List<String>) =
+        repository.makeShips(token, code, label).stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            Result.Loading
+        )
+
 }

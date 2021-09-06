@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
 import stslex.datamark.data.model.ShipListModel
-import stslex.datamark.data.model.ShipsLabelsListModel
+import stslex.datamark.data.model.ShipLabelModel
 import stslex.datamark.data.repository.interf.ShipsRepository
 import stslex.datamark.data.service.ShipsService
 import stslex.datamark.util.Result
@@ -35,7 +35,7 @@ class ShipsRepositoryImpl @Inject constructor(
     override suspend fun getShipsLabel(
         token: String,
         code: String
-    ): Flow<Result<ShipsLabelsListModel>> = callbackFlow {
+    ): Flow<Result<ShipLabelModel>> = callbackFlow {
         try {
             val response = service.getShipsLabels(token, code)
             if (response.isSuccessful && response.body() != null) {
@@ -49,9 +49,19 @@ class ShipsRepositoryImpl @Inject constructor(
         awaitClose { }
     }
 
-    override suspend fun makeShips(token: String, code: String, label: String) =
-        withContext(Dispatchers.IO) {
-            service.makeShips(token, code, label)
+    override suspend fun makeShips(token: String, code: String, label: List<String>) =
+        callbackFlow {
+            try {
+                val response = service.makeShips(token, code, label)
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()?.let {
+                        trySendBlocking(Result.Success(it))
+                    }
+                }
+            } catch (exception: Exception) {
+                trySendBlocking(Result.Failure(exception))
+            }
+            awaitClose { }
         }
 
 }

@@ -3,11 +3,11 @@ package stslex.datamark.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import stslex.datamark.data.model.ShipsLabelModel
+import stslex.datamark.data.model.LabelModel
 import stslex.datamark.databinding.ItemShipsBinding
 
 class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
-    private val items = mutableListOf<ShipsLabelModel>()
+    private val items = mutableListOf<LabelModel>()
     private var code = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,7 +21,7 @@ class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
-    fun addItems(list: List<ShipsLabelModel>, code: String) {
+    fun addItems(list: List<LabelModel>, code: String) {
         items.addAll(list)
         this.code = code
         notifyDataSetChanged()

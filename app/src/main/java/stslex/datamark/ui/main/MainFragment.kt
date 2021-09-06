@@ -9,11 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import stslex.datamark.R
-import stslex.datamark.data.model.ShipModel
+import stslex.datamark.data.model.CodeModel
 import stslex.datamark.databinding.FragmentMainBinding
 import stslex.datamark.ui.BaseFragment
 import stslex.datamark.ui.main.adapter.MainAdapter
@@ -66,16 +67,15 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    private fun getLabels(shipsList: List<ShipModel>) = viewLifecycleOwner.lifecycleScope.launch {
-        shipsList.forEach { shipModel ->
-            viewModel.getShipsLabels(token, shipModel.code).collect { result ->
+    private fun getLabels(shipsList: List<CodeModel>) = viewLifecycleOwner.lifecycleScope.launch {
+        shipsList.forEach { itemCode ->
+            viewModel.getShipsLabels(token, itemCode.code).collect { result ->
                 when (result) {
                     is Result.Success -> {
-                        adapter.addItems(result.data.labels, result.data.code)
+                        adapter.addItems(result.data.labels, itemCode.code)
                         binding.btnMakeShips.setOnClickListener { view ->
-                            result.data.labels.forEach {
-                                viewModel.makeShips(token, shipModel.code, it.label)
-                            }
+                            val list = result.data.labels.map { it.label }
+                            makeShips(itemCode.code, list)
                         }
                     }
                     is Result.Failure -> {
@@ -88,6 +88,26 @@ class MainFragment : BaseFragment() {
             }
         }
     }
+
+    private fun makeShips(code: String, labels: List<String>) =
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.makeShips(token, code, labels).collect {
+                when (it) {
+                    is Result.Success -> {
+                        Snackbar.make(
+                            binding.root,
+                            "${it.data.count} Number ${it.data.message}",
+                            Snackbar.LENGTH_LONG
+                        )
+                    }
+                    is Result.Failure -> {
+
+                    }
+                    is Result.Loading -> {
+                    }
+                }
+            }
+        }
 
     private fun initRecyclerView() {
         val recyclerView = binding.recyclerView
