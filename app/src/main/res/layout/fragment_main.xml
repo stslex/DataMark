@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/big_margin"
+    android:padding="@dimen/primary_margin"
     tools:context=".ui.main.MainFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/primary_margin"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             style="@style/TextAppearance.MaterialComponents.Body2"
@@ -36,8 +36,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="@dimen/primary_margin"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/primary_margin"
+        app:layout_constraintBottom_toTopOf="@+id/text_date_from"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:listitem="@layout/item_ships" />
 
 
@@ -46,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="@string/label_date_from">
+        android:hint="@string/label_date_from"
+        app:layout_constraintBottom_toTopOf="@+id/text_date_to">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -59,7 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="@string/label_date_to">
+        android:hint="@string/label_date_to"
+        app:layout_constraintBottom_toTopOf="@+id/text_page">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -72,7 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="@string/label_page">
+        android:hint="@string/label_page"
+        app:layout_constraintBottom_toTopOf="@+id/btn_get_labels">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -84,20 +89,29 @@
         android:id="@+id/btn_get_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_get_labels" />
+        android:text="@string/label_get_labels"
+        app:layout_constraintBottom_toTopOf="@id/btn_make_ships"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_make_ships"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/label_make_ships"
-        android:text="@string/label_make_ships" />
+        android:text="@string/label_make_ships"
+        app:layout_constraintBottom_toTopOf="@id/btn_sign_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/label_sign_out"
-        android:text="@string/label_sign_out" />
+        android:text="@string/label_sign_out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

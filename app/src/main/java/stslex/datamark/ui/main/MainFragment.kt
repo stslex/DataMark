@@ -47,21 +47,18 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         initRecyclerView()
-
         binding.btnSignOut.setOnClickListener {
             viewModel.logOut(token)
             findNavController().navigate(R.id.action_nav_main_to_nav_auth)
         }
     }
 
-    private fun initListeners() = viewLifecycleOwner.lifecycleScope.launch {
-        val dateFrom = binding.textDateFrom.editText?.text.toString()
-        val dateTo = binding.textDateTo.editText?.text.toString()
-        val page = binding.textPage.editText?.text.toString()
-        if (dateFrom.isNotEmpty() && dateTo.isNotEmpty() && page.isNotEmpty()) {
-            binding.btnGetLabels.setOnClickListener {
-                getListCode(dateFrom, dateTo, page)
-            }
+    private fun initListeners() {
+        binding.btnGetLabels.setOnClickListener {
+            val dateFrom = binding.textDateFrom.editText?.text.toString()
+            val dateTo = binding.textDateTo.editText?.text.toString()
+            val page = binding.textPage.editText?.text.toString()
+            getListCode(dateFrom, dateTo, page)
         }
     }
 
