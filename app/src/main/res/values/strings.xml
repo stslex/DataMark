@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">DataMark</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="MissingTranslation">DataMark</string>
 
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
@@ -7,5 +7,10 @@
     <string name="label_make_ships">Make ships</string>
     <string name="label_sign_out">Sign out</string>
     <string name="label_ship_code">Code</string>
-    <string name="label_ship_name">Name</string>
+    <string name="label_ship_label">Label</string>
+    <string name="label_copy">Copy</string>
+    <string name="label_get_labels">get labels</string>
+    <string name="label_date_from">date from: 1999–04–25</string>
+    <string name="label_date_to">date to: 2021–08–21</string>
+    <string name="label_page">page: 1</string>
 </resources>

@@ -7,8 +7,8 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
-import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.model.ShipLabelModel
+import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.repository.interf.ShipsRepository
 import stslex.datamark.data.service.ShipsService
 import stslex.datamark.util.Result
@@ -18,9 +18,14 @@ import javax.inject.Inject
 class ShipsRepositoryImpl @Inject constructor(
     private val service: ShipsService
 ) : ShipsRepository {
-    override suspend fun getShipsList(token: String): Flow<Result<ShipListModel>> = callbackFlow {
+    override suspend fun getShipsList(
+        token: String,
+        date_from: String,
+        date_to: String,
+        page: String
+    ): Flow<Result<ShipListModel>> = callbackFlow {
         try {
-            val response = service.getShipsList(token)
+            val response = service.getShipsList(token, date_from, date_to, page)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
                     trySendBlocking(Result.Success(it))
@@ -63,5 +68,9 @@ class ShipsRepositoryImpl @Inject constructor(
             }
             awaitClose { }
         }
+
+    override suspend fun logOut(token: String) = withContext(Dispatchers.IO) {
+        service.logOut(token)
+    }
 
 }

@@ -4,8 +4,8 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.model.ShipLabelModel
+import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.model.ShipsTakeModel
 import stslex.datamark.util.*
 
@@ -13,7 +13,10 @@ interface ShipsService {
 
     @GET("/$GET_CHIPS/")
     fun getShipsList(
-        @Query(QUERY_TOKEN) token: String
+        @Query(QUERY_TOKEN) token: String,
+        @Query(QUERY_DATE_FROM) date_from: String,
+        @Query(QUERY_DATE_TO) date_to: String,
+        @Query(QUERY_PAGE) page: String
     ): Response<ShipListModel>
 
     @POST("/$POST_SHIPS_LABELS/")
@@ -28,4 +31,9 @@ interface ShipsService {
         @Query(QUERY_CODE) code: String,
         @Query(QUERY_LABEL) label: List<String>
     ): Response<ShipsTakeModel>
+
+    @POST("/$POST_LOG_OUT")
+    fun logOut(
+        @Query(QUERY_TOKEN) token: String
+    )
 }

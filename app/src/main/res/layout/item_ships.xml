@@ -8,7 +8,7 @@
     android:weightSum="5">
 
     <TextView
-        android:id="@+id/item_ships_name"
+        android:id="@+id/item_ships_code"
         style="@style/TextAppearance.MaterialComponents.Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         tools:text="" />
 
     <TextView
-        android:id="@+id/item_ships_code"
+        android:id="@+id/item_ships_label"
         style="@style/TextAppearance.MaterialComponents.Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

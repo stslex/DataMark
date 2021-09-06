@@ -1,7 +1,6 @@
 package stslex.datamark.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import stslex.datamark.data.model.TokenModel
 import stslex.datamark.databinding.FragmentAuthBinding
 import stslex.datamark.ui.BaseFragment
 import stslex.datamark.util.Result
+import stslex.datamark.util.snackBarError
 
 @ExperimentalCoroutinesApi
 class AuthFragment : BaseFragment() {
@@ -54,7 +54,7 @@ class AuthFragment : BaseFragment() {
                 findNavController().navigate(directions)
             }
             is Result.Failure -> {
-                Log.e("exception", exception.message, exception.cause)
+                binding.root.snackBarError(exception.toString())
             }
             is Result.Loading -> {
 

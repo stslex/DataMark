@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.model.ShipLabelModel
+import stslex.datamark.data.model.ShipListModel
 import stslex.datamark.data.repository.interf.ShipsRepository
 import stslex.datamark.util.Result
 import javax.inject.Inject
@@ -18,8 +18,13 @@ class MainViewModel @Inject constructor(
     private val repository: ShipsRepository
 ) : ViewModel() {
 
-    suspend fun getShipsList(token: String): StateFlow<Result<ShipListModel>> =
-        repository.getShipsList(token).stateIn(
+    suspend fun getShipsList(
+        token: String,
+        date_from: String,
+        date_to: String, 
+        page: String
+    ): StateFlow<Result<ShipListModel>> =
+        repository.getShipsList(token, date_from, date_to, page).stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             Result.Loading
@@ -41,5 +46,9 @@ class MainViewModel @Inject constructor(
             SharingStarted.Lazily,
             Result.Loading
         )
+
+    fun logOut(token: String) = viewModelScope.launch {
+        repository.logOut(token)
+    }
 
 }

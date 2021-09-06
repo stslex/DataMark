@@ -19,6 +19,7 @@ import stslex.datamark.databinding.FragmentMainBinding
 import stslex.datamark.ui.BaseFragment
 import stslex.datamark.ui.main.adapter.MainAdapter
 import stslex.datamark.util.Result
+import stslex.datamark.util.snackBarError
 
 
 @ExperimentalCoroutinesApi
@@ -46,26 +47,40 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         initRecyclerView()
+
         binding.btnSignOut.setOnClickListener {
+            viewModel.logOut(token)
             findNavController().navigate(R.id.action_nav_main_to_nav_auth)
         }
     }
 
     private fun initListeners() = viewLifecycleOwner.lifecycleScope.launch {
-        viewModel.getShipsList(token).collect {
-            when (it) {
-                is Result.Success -> {
-                    getLabels(it.data.ships_list)
-                }
-                is Result.Failure -> {
-
-                }
-                is Result.Loading -> {
-
-                }
+        val dateFrom = binding.textDateFrom.editText?.text.toString()
+        val dateTo = binding.textDateTo.editText?.text.toString()
+        val page = binding.textPage.editText?.text.toString()
+        if (dateFrom.isNotEmpty() && dateTo.isNotEmpty() && page.isNotEmpty()) {
+            binding.btnGetLabels.setOnClickListener {
+                getListCode(dateFrom, dateTo, page)
             }
         }
     }
+
+    private fun getListCode(dateFrom: String, dateTo: String, page: String) =
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getShipsList(token, dateFrom, dateTo, page).collect {
+                when (it) {
+                    is Result.Success -> {
+                        getLabels(it.data.ships_list)
+                    }
+                    is Result.Failure -> {
+                        binding.root.snackBarError(it.exception.toString())
+                    }
+                    is Result.Loading -> {
+
+                    }
+                }
+            }
+        }
 
     private fun getLabels(shipsList: List<CodeModel>) = viewLifecycleOwner.lifecycleScope.launch {
         shipsList.forEach { itemCode ->
@@ -79,7 +94,7 @@ class MainFragment : BaseFragment() {
                         }
                     }
                     is Result.Failure -> {
-
+                        binding.root.snackBarError(result.exception.toString())
                     }
                     is Result.Loading -> {
 
@@ -98,10 +113,10 @@ class MainFragment : BaseFragment() {
                             binding.root,
                             "${it.data.count} Number ${it.data.message}",
                             Snackbar.LENGTH_LONG
-                        )
+                        ).show()
                     }
                     is Result.Failure -> {
-
+                        binding.root.snackBarError(it.exception.toString())
                     }
                     is Result.Loading -> {
                     }

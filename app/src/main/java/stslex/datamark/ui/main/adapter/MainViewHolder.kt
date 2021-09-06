@@ -9,7 +9,7 @@ class MainViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: LabelModel, code: String) {
-        binding.itemShipsName.text = item.label
         binding.itemShipsCode.text = code
+        binding.itemShipsLabel.text = item.label
     }
 }
