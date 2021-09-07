@@ -12,27 +12,30 @@ interface ShipsService {
 
     @GET("/$GET_CHIPS/")
     suspend fun getShipsList(
-        @Field("token") token: String,
-        @Field(QUERY_DATE_FROM) date_from: String,
-        @Field(QUERY_DATE_TO) date_to: String,
-        @Field(QUERY_PAGE) page: String
+        @Header("token") token: String,
+        @Query(QUERY_DATE_FROM) date_from: String,
+        @Query(QUERY_DATE_TO) date_to: String,
+        @Query(QUERY_PAGE) page: String,
     ): Response<ShipListModel>
 
+    @FormUrlEncoded
     @POST("/$POST_SHIPS_LABELS/")
     suspend fun getShipsLabels(
-        @Body requestBody: RequestBody,
-        @Query(QUERY_CODE) code: String
+        @Header("token") token: String,
+        @Field(QUERY_CODE) code: String
     ): Response<ShipLabelModel>
 
+
+    @FormUrlEncoded
     @POST("/$POST_SHIPS/")
     suspend fun makeShips(
-        @Body requestBody: RequestBody,
-        @Query(QUERY_CODE) code: String,
-        @Query(QUERY_LABEL) label: List<String>
+        @Header("token") token: String,
+        @Field(QUERY_CODE) code: String,
+        @Field(QUERY_LABEL) label: List<String>
     ): Response<ShipsTakeModel>
 
     @POST("/logout")
     suspend fun logOut(
-        @Body requestBody: RequestBody,
+        @Header("token") token: String
     ): Response<String>
 }

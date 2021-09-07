@@ -29,8 +29,12 @@ class ShipsRepositoryImpl @Inject constructor(
         page: String
     ): Flow<Result<ShipListModel>> = callbackFlow {
         try {
-
-            val response = service.getShipsList(token = token, date_from = date_from, date_to = date_to, page = page)
+            val response = service.getShipsList(
+                token = token,
+                date_from = date_from,
+                date_to = date_to,
+                page = page
+            )
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
                     trySendBlocking(Result.Success(it))
@@ -47,11 +51,7 @@ class ShipsRepositoryImpl @Inject constructor(
         code: String
     ): Flow<Result<ShipLabelModel>> = callbackFlow {
         try {
-            val requestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("token", token)
-                .build()
-            val response = service.getShipsLabels(requestBody, code)
+            val response = service.getShipsLabels(token, code)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
                     trySendBlocking(Result.Success(it))
@@ -66,11 +66,7 @@ class ShipsRepositoryImpl @Inject constructor(
     override suspend fun makeShips(token: String, code: String, label: List<String>) =
         callbackFlow {
             try {
-                val requestBody = MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("token", token)
-                    .build()
-                val response = service.makeShips(requestBody, code, label)
+                val response = service.makeShips(token, code, label)
                 if (response.isSuccessful && response.body() != null) {
                     response.body()?.let {
                         trySendBlocking(Result.Success(it))
@@ -83,11 +79,7 @@ class ShipsRepositoryImpl @Inject constructor(
         }
 
     override suspend fun logOut(token: String): Unit = withContext(Dispatchers.IO) {
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("token", token)
-            .build()
-        val response = service.logOut(requestBody)
+        val response = service.logOut(token)
         if (response.isSuccessful) {
             Log.i("ShipsLogout", response.toString())
         }
