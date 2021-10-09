@@ -1,4 +1,4 @@
-package stslex.datamark.data.model.ships_take
+package stslex.datamark.data.model.ui
 
 data class ShipsListItem(
     val real_count: String? = "", //Количество отправленых СИ

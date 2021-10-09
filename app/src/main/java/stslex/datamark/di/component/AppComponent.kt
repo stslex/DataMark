@@ -12,7 +12,8 @@ import stslex.datamark.ui.BaseFragment
         ViewModelFactoryModule::class,
         RepositoryModule::class,
         RetrofitServiceModule::class,
-        ResponseModule::class
+        ResponseModule::class,
+        MapperModule::class
     ]
 )
 interface AppComponent {

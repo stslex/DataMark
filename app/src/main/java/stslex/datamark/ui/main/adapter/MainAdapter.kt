@@ -3,7 +3,7 @@ package stslex.datamark.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import stslex.datamark.data.model.ships_take.ShipsListItem
+import stslex.datamark.data.model.ui.ShipsListItem
 import stslex.datamark.databinding.ItemShipsBinding
 
 class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {

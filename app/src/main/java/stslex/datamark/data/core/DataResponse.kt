@@ -1,38 +1,37 @@
-package stslex.datamark.data.repository
+package stslex.datamark.data.core
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import retrofit2.HttpException
 import retrofit2.Response
-import stslex.datamark.data.core.Result
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-interface ResponseCreator {
+interface DataResponse {
 
-    fun <T> request(response: Response<T>): Flow<Result<T>>
+    fun <T> request(response: Response<T>): Flow<DataResult<T>>
 
-    class Base @Inject constructor() : ResponseCreator {
+    class Base @Inject constructor() : DataResponse {
 
-        override fun <T> request(response: Response<T>): Flow<Result<T>> = callbackFlow {
+        override fun <T> request(
+            response: Response<T>
+        ): Flow<DataResult<T>> = callbackFlow {
             response.responseCallBack { trySendBlocking(it) }
             awaitClose { }
         }
 
         private inline fun <T> Response<T>.responseCallBack(
-            function: (Result<T>) -> Unit
+            function: (DataResult<T>) -> Unit
         ) = try {
             if (isSuccessful) {
-                val result = body() as T
-                function(Result.Success(result))
+                function(DataResult.Success(body() as T))
             } else {
-                function(Result.Failure(HttpException(this)))
+                function(DataResult.Error(body() as T))
             }
         } catch (exception: Exception) {
-            function(Result.Failure(exception))
+            function(DataResult.Failure(exception))
         }
     }
 }

@@ -1,10 +1,10 @@
-package stslex.datamark.data.repository
+package stslex.datamark.data.ships
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import stslex.datamark.data.core.Result
-import stslex.datamark.data.model.ships_take.ShipsTakeModel
-import stslex.datamark.data.service.ShipsService
+import stslex.datamark.data.core.DataResponse
+import stslex.datamark.data.core.DataResult
+import stslex.datamark.data.model.data.ShipsListDataModel
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -15,13 +15,13 @@ interface ShipsRepository {
         date_from: String,
         date_to: String,
         page: String
-    ): Flow<Result<ShipsTakeModel>>
+    ): Flow<DataResult<ShipsListDataModel>>
 
-    suspend fun logOut(token: String): Flow<Result<String>>
+    suspend fun logOut(token: String): Flow<DataResult<String>>
 
     class Base @Inject constructor(
         private val service: ShipsService,
-        private val creator: ResponseCreator
+        private val creator: DataResponse
     ) : ShipsRepository {
 
         override suspend fun getShipsTake(
@@ -29,10 +29,10 @@ interface ShipsRepository {
             date_from: String,
             date_to: String,
             page: String
-        ): Flow<Result<ShipsTakeModel>> =
+        ): Flow<DataResult<ShipsListDataModel>> =
             creator.request(service.shipsList(token, date_from, date_to, page))
 
-        override suspend fun logOut(token: String): Flow<Result<String>> =
+        override suspend fun logOut(token: String): Flow<DataResult<String>> =
             creator.request(service.logOut(token))
 
     }

@@ -1,11 +1,11 @@
-package stslex.datamark.data.service
+package stslex.datamark.data.ships
 
 import retrofit2.Response
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
-import stslex.datamark.data.model.ShipsSuccessModel
-import stslex.datamark.data.model.ships_take.ShipsTakeModel
+import stslex.datamark.data.model.data.ShipsListDataModel
+import stslex.datamark.data.model.ui.ShipsListModel
 
 interface ShipsService {
 
@@ -15,7 +15,7 @@ interface ShipsService {
         @Header("Token") token: String,
         @Query("code") code: String,
         @Query("labels") label: List<String>
-    ): Response<ShipsSuccessModel>
+    ): Response<ShipsListModel>
 
     /*Список СИ для оприходования*/
     @POST("ships/list")
@@ -24,7 +24,7 @@ interface ShipsService {
         @Query("date_from") date_from: String, //YYYY-MM-DD
         @Query("date_to") date_to: String, //YYYY-MM-DD
         @Query("page") page: String,
-    ): Response<ShipsTakeModel>
+    ): Response<ShipsListDataModel>
 
     @POST("/logout")
     suspend fun logOut(

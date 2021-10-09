@@ -3,8 +3,8 @@ package stslex.datamark.di.module
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import stslex.datamark.data.service.AuthService
-import stslex.datamark.data.service.ShipsService
+import stslex.datamark.data.auth.AuthService
+import stslex.datamark.data.ships.ShipsService
 
 @Module(includes = [RetrofitClientModule::class])
 class RetrofitServiceModule {

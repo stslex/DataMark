@@ -8,6 +8,13 @@
     android:padding="@dimen/big_margin"
     tools:context=".ui.auth.AuthFragment">
 
+    <ProgressBar
+        android:id="@+id/SHOW_PROGRESS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/primary_margin"
+        android:visibility="invisible" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_email"
         android:layout_width="match_parent"

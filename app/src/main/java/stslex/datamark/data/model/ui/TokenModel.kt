@@ -1,4 +1,4 @@
-package stslex.datamark.data.model
+package stslex.datamark.data.model.ui
 
 import com.google.gson.annotations.SerializedName
 

@@ -3,8 +3,8 @@ package stslex.datamark.di.module
 import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import stslex.datamark.data.repository.AuthRepository
-import stslex.datamark.data.repository.ShipsRepository
+import stslex.datamark.data.auth.AuthRepository
+import stslex.datamark.data.ships.ShipsRepository
 
 @ExperimentalCoroutinesApi
 @Module
