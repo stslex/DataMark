@@ -1,6 +1,7 @@
 package stslex.datamark.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import stslex.datamark.R
-import stslex.datamark.data.model.CodeModel
+import stslex.datamark.data.core.Result
 import stslex.datamark.databinding.FragmentMainBinding
 import stslex.datamark.ui.BaseFragment
 import stslex.datamark.ui.main.adapter.MainAdapter
-import stslex.datamark.util.Result
 import stslex.datamark.util.snackBarError
 
 
@@ -30,8 +28,12 @@ class MainFragment : BaseFragment() {
 
     private val viewModel: MainViewModel by activityViewModels { viewModelFactory.get() }
 
-    private lateinit var token: String
-    private lateinit var adapter: MainAdapter
+    private var _token: String? = null
+    private val token: String get() = _token!!
+
+    private val adapter: MainAdapter by lazy {
+        MainAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,38 +41,54 @@ class MainFragment : BaseFragment() {
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val args: MainFragmentArgs by navArgs()
-        token = args.token
+        _token = args.token
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
-        initRecyclerView()
-        binding.btnSignOut.setOnClickListener {
-            viewModel.logOut(token)
-            findNavController().navigate(R.id.action_nav_main_to_nav_auth)
+        binding.recyclerView.adapter = adapter
+        binding.btnGetLabels.setOnClickListener(getShipsTakeClickListener)
+        binding.btnSignOut.setOnClickListener(logOutClickListener)
+    }
+
+    private val logOutClickListener = View.OnClickListener {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.logOut(token).collect {
+                when (it) {
+                    is Result.Success -> {
+                        Log.e("logOut Message Success", it.toString())
+                        findNavController().navigate(R.id.action_nav_main_to_nav_auth)
+                    }
+
+                    is Result.Failure -> {
+                        binding.root.snackBarError(it.exception.message.toString())
+                        Log.e("logOut Failure", it.exception.localizedMessage, it.exception.cause)
+                    }
+                    is Result.Loading -> {
+                        Log.i("logOut Loading", it.toString())
+                    }
+                }
+            }
         }
     }
 
-    private fun initListeners() {
-        binding.btnGetLabels.setOnClickListener {
-            val dateFrom = binding.textDateFrom.editText?.text.toString()
-            val dateTo = binding.textDateTo.editText?.text.toString()
-            val page = binding.textPage.editText?.text.toString()
-            getListCode(dateFrom, dateTo, page)
-        }
+    private val getShipsTakeClickListener = View.OnClickListener {
+        val dateFrom = binding.textDateFrom.editText?.text.toString()
+        val dateTo = binding.textDateTo.editText?.text.toString()
+        val page = binding.textPage.editText?.text.toString()
+        getListCode(dateFrom, dateTo, page)
     }
 
     private fun getListCode(dateFrom: String, dateTo: String, page: String) =
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getShipsList(token, dateFrom, dateTo, page).collect {
+            viewModel.getShipsTake(token, dateFrom, dateTo, page).collect {
                 when (it) {
                     is Result.Success -> {
-                        getLabels(it.data.ships_list)
+                        adapter.addItems(it.data.ships_list)
                     }
                     is Result.Failure -> {
-                        binding.root.snackBarError(it.exception.toString())
+                        binding.root.snackBarError(it.exception.message.toString())
                     }
                     is Result.Loading -> {
 
@@ -78,55 +96,6 @@ class MainFragment : BaseFragment() {
                 }
             }
         }
-
-    private fun getLabels(shipsList: List<CodeModel>) = viewLifecycleOwner.lifecycleScope.launch {
-        shipsList.forEach { itemCode ->
-            viewModel.getShipsLabels(token, itemCode.code).collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        adapter.addItems(result.data.labels, itemCode.code)
-                        binding.btnMakeShips.setOnClickListener { view ->
-                            val list = result.data.labels.map { it.label }
-                            makeShips(itemCode.code, list)
-                        }
-                    }
-                    is Result.Failure -> {
-                        binding.root.snackBarError(result.exception.toString())
-                    }
-                    is Result.Loading -> {
-
-                    }
-                }
-            }
-        }
-    }
-
-    private fun makeShips(code: String, labels: List<String>) =
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.makeShips(token, code, labels).collect {
-                when (it) {
-                    is Result.Success -> {
-                        Snackbar.make(
-                            binding.root,
-                            "${it.data.count} Number ${it.data.message}",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    is Result.Failure -> {
-                        binding.root.snackBarError(it.exception.toString())
-                    }
-                    is Result.Loading -> {
-                    }
-                }
-            }
-        }
-
-    private fun initRecyclerView() {
-        val recyclerView = binding.recyclerView
-        adapter = MainAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

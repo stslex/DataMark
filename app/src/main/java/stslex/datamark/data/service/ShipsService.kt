@@ -1,41 +1,33 @@
 package stslex.datamark.data.service
 
-import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.*
-import stslex.datamark.data.model.ShipLabelModel
-import stslex.datamark.data.model.ShipListModel
-import stslex.datamark.data.model.ShipsTakeModel
-import stslex.datamark.util.*
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Query
+import stslex.datamark.data.model.ShipsSuccessModel
+import stslex.datamark.data.model.ships_take.ShipsTakeModel
 
 interface ShipsService {
 
-    @GET("/$GET_CHIPS/")
-    suspend fun getShipsList(
-        @Header("token") token: String,
-        @Query(QUERY_DATE_FROM) date_from: String,
-        @Query(QUERY_DATE_TO) date_to: String,
-        @Query(QUERY_PAGE) page: String,
-    ): Response<ShipListModel>
-
-    @FormUrlEncoded
-    @POST("/$POST_SHIPS_LABELS/")
-    suspend fun getShipsLabels(
-        @Header("token") token: String,
-        @Field(QUERY_CODE) code: String
-    ): Response<ShipLabelModel>
-
-
-    @FormUrlEncoded
-    @POST("/$POST_SHIPS/")
+    /*Оприходование*/
+    @POST("ships/take")
     suspend fun makeShips(
-        @Header("token") token: String,
-        @Field(QUERY_CODE) code: String,
-        @Field(QUERY_LABEL) label: List<String>
+        @Header("Token") token: String,
+        @Query("code") code: String,
+        @Query("labels") label: List<String>
+    ): Response<ShipsSuccessModel>
+
+    /*Список СИ для оприходования*/
+    @POST("ships/list")
+    suspend fun shipsList(
+        @Header("Token") token: String,
+        @Query("date_from") date_from: String, //YYYY-MM-DD
+        @Query("date_to") date_to: String, //YYYY-MM-DD
+        @Query("page") page: String,
     ): Response<ShipsTakeModel>
 
     @POST("/logout")
     suspend fun logOut(
-        @Header("token") token: String
+        @Header("Token") token: String
     ): Response<String>
 }

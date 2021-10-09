@@ -1,6 +1,7 @@
 package stslex.datamark.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import stslex.datamark.data.core.Result
 import stslex.datamark.data.model.TokenModel
 import stslex.datamark.databinding.FragmentAuthBinding
 import stslex.datamark.ui.BaseFragment
-import stslex.datamark.util.Result
 import stslex.datamark.util.snackBarError
 
 @ExperimentalCoroutinesApi
@@ -34,14 +35,16 @@ class AuthFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnSignIn.setOnClickListener {
-            val username = binding.textEmail.editText?.text.toString()
-            val password = binding.textPassword.editText?.text.toString()
-            val agree = true
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.auth(username, password, agree).collect {
-                    it.collect()
-                }
+        binding.btnSignIn.setOnClickListener(signInClickListener)
+    }
+
+    private val signInClickListener = View.OnClickListener {
+        val username = binding.textEmail.editText?.text.toString()
+        val password = binding.textPassword.editText?.text.toString()
+        val agree = true
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.auth(username, password, agree).collect {
+                it.collect()
             }
         }
     }
@@ -54,7 +57,8 @@ class AuthFragment : BaseFragment() {
                 findNavController().navigate(directions)
             }
             is Result.Failure -> {
-                binding.root.snackBarError(exception.toString())
+                Log.i("auth Failure", exception.message, exception.cause)
+                binding.root.snackBarError(exception.message.toString())
             }
             is Result.Loading -> {
 

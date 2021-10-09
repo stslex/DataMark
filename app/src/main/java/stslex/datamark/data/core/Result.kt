@@ -1,6 +1,7 @@
-package stslex.datamark.util
+package stslex.datamark.data.core
 
 sealed class Result<out R> {
+
     data class Success<out T>(val data: T) : Result<T>()
     class Failure(val exception: Exception) : Result<Nothing>()
     object Loading : Result<Nothing>()

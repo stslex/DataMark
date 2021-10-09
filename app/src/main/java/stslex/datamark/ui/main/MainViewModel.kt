@@ -6,11 +6,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import stslex.datamark.data.model.ShipLabelModel
-import stslex.datamark.data.model.ShipListModel
-import stslex.datamark.data.repository.interf.ShipsRepository
-import stslex.datamark.util.Result
+import stslex.datamark.data.core.Result
+import stslex.datamark.data.model.ships_take.ShipsTakeModel
+import stslex.datamark.data.repository.ShipsRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -18,37 +16,23 @@ class MainViewModel @Inject constructor(
     private val repository: ShipsRepository
 ) : ViewModel() {
 
-    suspend fun getShipsList(
+    suspend fun getShipsTake(
         token: String,
         date_from: String,
-        date_to: String, 
+        date_to: String,
         page: String
-    ): StateFlow<Result<ShipListModel>> =
-        repository.getShipsList(token, date_from, date_to, page).stateIn(
+    ): StateFlow<Result<ShipsTakeModel>> =
+        repository.getShipsTake(token, date_from, date_to, page).stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             Result.Loading
         )
 
-    suspend fun getShipsLabels(
-        token: String,
-        code: String
-    ): StateFlow<Result<ShipLabelModel>> =
-        repository.getShipsLabel(token, code).stateIn(
+    suspend fun logOut(token: String): StateFlow<Result<String>> =
+        repository.logOut(token).stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             Result.Loading
         )
-
-    suspend fun makeShips(token: String, code: String, label: List<String>) =
-        repository.makeShips(token, code, label).stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            Result.Loading
-        )
-
-    fun logOut(token: String) = viewModelScope.launch {
-        repository.logOut(token)
-    }
 
 }

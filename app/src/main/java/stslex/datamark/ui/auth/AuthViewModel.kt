@@ -6,9 +6,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import stslex.datamark.data.core.Result
 import stslex.datamark.data.model.TokenModel
-import stslex.datamark.data.repository.interf.AuthRepository
-import stslex.datamark.util.Result
+import stslex.datamark.data.repository.AuthRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -22,9 +22,5 @@ class AuthViewModel @Inject constructor(
         agree: Boolean
     ): StateFlow<Result<TokenModel>> =
         repository.auth(username, password, agree)
-            .stateIn(
-                viewModelScope,
-                SharingStarted.Lazily,
-                Result.Loading
-            )
+            .stateIn(viewModelScope, SharingStarted.Lazily, Result.Loading)
 }

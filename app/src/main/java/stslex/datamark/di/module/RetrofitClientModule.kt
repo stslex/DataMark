@@ -10,6 +10,7 @@ import stslex.datamark.util.BASE_URL
 
 @Module
 class RetrofitClientModule {
+
     @Provides
     fun providesRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
