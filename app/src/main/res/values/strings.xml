@@ -9,6 +9,7 @@
     <string name="label_ship_code">Code</string>
     <string name="label_ship_label">Label</string>
     <string name="label_copy">Copy</string>
+    <string name="label_get_ships_list">get ships list</string>
     <string name="label_get_labels">get labels</string>
     <string name="label_date_from">date from: 1999–04–25</string>
     <string name="label_date_to">date to: 2021–08–21</string>

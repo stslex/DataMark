@@ -63,7 +63,7 @@ class AuthFragment : BaseFragment() {
             }
             is UIResult.Error -> {
                 binding.SHOWPROGRESS.visibility = View.INVISIBLE
-                binding.root.snackBarError(error?.message.toString())
+                binding.root.snackBarError(message)
             }
             is UIResult.Loading -> {
                 binding.SHOWPROGRESS.visibility = View.VISIBLE

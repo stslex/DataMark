@@ -8,6 +8,6 @@ interface Mapper {
 
     interface DataToUI<D, U> : Data<D, U> {
         fun map(exception: Exception): U
-        fun mapError(data: D): U
+        fun map(message: String): U
     }
 }

@@ -47,7 +47,7 @@ interface UIResponse {
                 when (it) {
                     is DataResult.Success -> function(UIResult.Success(it.data))
                     is DataResult.Failure -> function(UIResult.Failure(it.exception))
-                    is DataResult.Error -> function(UIResult.Error(null))
+                    is DataResult.Error -> function(UIResult.Error(it.message))
                 }
             }
         } catch (exception: Exception) {

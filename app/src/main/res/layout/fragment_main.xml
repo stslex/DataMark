@@ -97,19 +97,32 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_get_labels"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_get_ships_list"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/primary_margin"
+        android:text="@string/label_get_ships_list"
+        app:layout_constraintBottom_toTopOf="@id/btn_make_ships"
+        app:layout_constraintEnd_toStartOf="@+id/btn_get_labels"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_get_labels"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/primary_margin"
+        android:enabled="false"
         android:text="@string/label_get_labels"
         app:layout_constraintBottom_toTopOf="@id/btn_make_ships"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/btn_get_ships_list" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_make_ships"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/label_make_ships"
+        android:enabled="false"
         android:text="@string/label_make_ships"
         app:layout_constraintBottom_toTopOf="@id/btn_sign_out"
         app:layout_constraintEnd_toEndOf="parent"

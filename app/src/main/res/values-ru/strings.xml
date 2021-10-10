@@ -8,7 +8,8 @@
     <string name="label_ship_code">Номер отгрузки</string>
     <string name="label_ship_label">Код маркировки</string>
     <string name="label_copy">Скопировать</string>
-    <string name="label_get_labels">Получить коды загрузки</string>
+    <string name="label_get_ships_list">список СИ</string>
+    <string name="label_get_labels">отгруженные Си</string>
     <string name="label_date_from">Дата начала интервала: 1999–04–25</string>
     <string name="label_date_to">Дата окончания интервала: 2021–08–21</string>
     <string name="label_page">Номер страницы: 1</string>
