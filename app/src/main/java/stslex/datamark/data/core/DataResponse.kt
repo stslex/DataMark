@@ -1,6 +1,5 @@
 package stslex.datamark.data.core
 
-import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -29,9 +28,8 @@ interface DataResponse {
             if (isSuccessful) {
                 function(DataResult.Success(body() as T))
             } else {
-                function(DataResult.Error(message()))
+                function(DataResult.Error("${code()}: ${message()}"))
             }
-            Log.i("sdsadad", body()!!.toString())
         } catch (exception: Exception) {
             function(DataResult.Failure(exception))
         }
